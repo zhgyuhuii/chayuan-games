@@ -4,7 +4,10 @@
  *    保证 renderer 引擎层 players.js 的 fetch URL 原样可用——同构面零改动）
  *  - POST /v1/chat/completions：按 modelRef "<vendor>/<model>" 路由到厂商
  *    baseUrl + key；OpenAI 兼容直通；anthropic-messages 厂商做协议转换
- *  - GET /v1/models?vendor=xx：测试连接/模型发现（手填口径的连通性验证）
+ *  - GET /v1/models?vendor=xx：测试连接/模型发现（手填口径的连通性验证，
+ *    失败静默回退手填 models）
+ *  - POST /v1/models：获取模型（body {vendor, baseUrl?, key?, api?}——未保存
+ *    输入覆盖已存配置；严格实拉不回退，失败原样报错；返回裸模型 id 串）
  *  - CORS 全放（本机自用网关，token 即凭证）
  */
 import { createServer } from "node:http";
@@ -69,6 +72,25 @@ export function startGateway({ getConfig }) {
     try { return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}"); } catch { return {}; }
   }
 
+  /** 实拉厂商原生模型列表（GET 发现与 POST 获取共用）：返回 { ok, ids, status, msg }。 */
+  async function listModelsLive(baseUrl, key, api) {
+    const headers = api === "anthropic-messages"
+      ? { "x-api-key": key ?? "", "anthropic-version": "2023-06-01" }
+      : { ...(key ? { Authorization: `Bearer ${key}` } : {}) };
+    try {
+      const r = await fetch(`${baseUrl.replace(/\/$/, "")}/models`, { headers, signal: AbortSignal.timeout(8000) });
+      if (!r.ok) {
+        const data = await r.json().catch(() => ({}));
+        return { ok: false, status: r.status, msg: data?.error?.message ?? `厂商 ${r.status}` };
+      }
+      const data = await r.json();
+      const ids = (data.data ?? []).map((m) => (typeof m === "string" ? m : m?.id)).filter(Boolean); // 容错 string/{id} 两种元素
+      return { ok: true, ids, status: r.status };
+    } catch (e) {
+      return { ok: false, status: 502, msg: `厂商连接失败：${e?.message ?? e}` };
+    }
+  }
+
   const server = createServer(async (req, res) => {
     if (req.method === "OPTIONS") { res.writeHead(204, { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Access-Control-Allow-Methods": "GET,POST,OPTIONS" }); return res.end(); }
     // token 走路径段 /t/<token>/…（2026-11-07 真机 T4 实锤：query 形式 base?t=token
@@ -87,15 +109,23 @@ export function startGateway({ getConfig }) {
       const out = [];
       for (const v of vendors) {
         if (!v.baseUrl) { out.push(...(v.models ?? []).map((m) => ({ id: `${v.id}/${m}`, vendor: v.id }))); continue; } // 无 baseUrl 手填档：直接报已配置模型
-        try {
-          const r = await fetch(`${v.baseUrl.replace(/\/$/, "")}/models`, { headers: v.api === "anthropic-messages" ? { "x-api-key": v.key, "anthropic-version": "2023-06-01" } : { Authorization: `Bearer ${v.key}` }, signal: AbortSignal.timeout(8000) });
-          if (r.ok) {
-            const data = await r.json();
-            out.push(...(data.data ?? []).map((m) => ({ id: `${v.id}/${m.id}`, vendor: v.id })));
-          } else out.push(...(v.models ?? []).map((m) => ({ id: `${v.id}/${m}`, vendor: v.id })));
-        } catch { out.push(...(v.models ?? []).map((m) => ({ id: `${v.id}/${m}`, vendor: v.id }))); }
+        const live = await listModelsLive(v.baseUrl, v.key, v.api ?? "openai-completions");
+        out.push(...(live.ok ? live.ids : (v.models ?? [])).map((m) => ({ id: `${v.id}/${m}`, vendor: v.id }))); // 失败静默回退手填（测试连接口径）
       }
       return json(res, 200, { object: "list", data: out });
+    }
+
+    if (req.method === "POST" && url.pathname === "/v1/models") { // 获取模型：严格实拉不回退，未保存输入（baseUrl/key/api）覆盖已存配置
+      const body = await readBody(req);
+      const vendorId = String(body.vendor ?? "");
+      const saved = (getConfig().vendors ?? []).find((v) => v.id === vendorId);
+      const baseUrl = String(body.baseUrl ?? saved?.baseUrl ?? "").trim();
+      const key = String(body.key ?? saved?.key ?? "").trim();
+      const api = body.api === "anthropic-messages" || body.api === "openai-completions" ? body.api : (saved?.api ?? "openai-completions");
+      if (!baseUrl) return json(res, 400, { error: { message: "缺少 Base URL（请先填写厂商 Base URL）" } });
+      const live = await listModelsLive(baseUrl, key, api);
+      if (!live.ok) return json(res, live.status === 401 || live.status === 403 ? 401 : 502, { error: { message: live.msg } });
+      return json(res, 200, { object: "list", data: live.ids }); // 单厂商场景：裸模型 id（无 vendor/ 前缀），渲染层直入 models 字段
     }
 
     if (req.method === "POST" && url.pathname === "/v1/chat/completions") {

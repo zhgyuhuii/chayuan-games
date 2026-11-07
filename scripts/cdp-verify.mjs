@@ -49,7 +49,8 @@ await sleep(400);
 const settings = await evaluate(`(() => {
   const grid = [...document.querySelectorAll('[data-catalog-vendor]')].map(e => e.getAttribute('data-catalog-vendor'));
   const configured = [...document.querySelectorAll('[data-vendor-card]')].map(e => e.getAttribute('data-vendor-card'));
-  return { catalogInPage: grid.length, configured, groups: [...document.querySelectorAll('[data-catalog-groups] button')].map(e => e.textContent) };
+  const fetchBtns = [...document.querySelectorAll('[data-vendor-fetch]')].map(e => e.getAttribute('data-vendor-fetch'));
+  return { catalogInPage: grid.length, configured, fetchBtns, addCustomBtn: !!document.querySelector('[data-settings-add-custom]'), groups: [...document.querySelectorAll('[data-catalog-groups] button')].map(e => e.textContent) };
 })()`);
 console.log("[T3] 配置页(cn组):", JSON.stringify(settings, null, 1));
 

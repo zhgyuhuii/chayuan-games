@@ -52,7 +52,7 @@ export function useModelRegistry({ pollMs = 0 } = {}) {
   const enabled = state.vendors.filter((v) => v.enabled !== false && (v.models ?? []).length > 0);
   const treeNodes = enabled.map((v) => ({
     id: v.id,
-    label: VENDOR_BY_ID.get(v.id)?.name ?? v.id,
+    label: v.name ?? VENDOR_BY_ID.get(v.id)?.name ?? v.id, // 自定义厂商显示所填名称
     children: (v.models ?? []).map((m) => ({ id: `${v.id}/${m}`, value: `${v.id}/${m}` })),
   }));
   const leafValues = treeNodes.flatMap((n) => n.children.map((c) => c.value));
@@ -69,6 +69,24 @@ export async function testVendorConnection(vendorId) {
     if (!r.ok) return { ok: false, msg: data?.error?.message ?? `HTTP ${r.status}` };
     const n = (data.data ?? []).length;
     return { ok: true, msg: n > 0 ? `连通，${n} 个模型` : "连通（该厂商未列出模型，请手填）" };
+  } catch (e) {
+    return { ok: false, msg: e?.message ?? String(e) };
+  }
+}
+
+/** 获取厂商模型列表：POST /v1/models（未保存的 key/baseUrl/api 覆盖已存配置，严格实拉）。返回 { ok, models?, msg }。 */
+export async function fetchVendorModels({ id, baseUrl, key, api }) {
+  const { proxyBase } = await discoverGateway();
+  if (!proxyBase || proxyBase === "http://127.0.0.1:0") return { ok: false, msg: "网关未就绪（需在桌面应用内使用）" };
+  try {
+    const r = await fetch(`${proxyBase}/v1/models`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ vendor: id, baseUrl, key, api }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) return { ok: false, msg: data?.error?.message ?? `HTTP ${r.status}` };
+    return { ok: true, models: (data.data ?? []).filter((m) => typeof m === "string" && m) };
   } catch (e) {
     return { ok: false, msg: e?.message ?? String(e) };
   }
