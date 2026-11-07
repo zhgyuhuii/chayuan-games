@@ -18,7 +18,9 @@ if (!app.requestSingleInstanceLock()) {
   let win = null;
   let store = null;
   let gateway = null;
-  let config = { vendors: [] }; // 模型配置（vendor id/baseUrl/key/api/models/enabled）——userData/arena/config.json
+  // 模型配置（userData/arena/config.json）——网关路由每次重读盘（2026-11-07
+  // 真机 T6 实锤：启动时快照不感知外部/手动改盘 → 404 未配置命名空间）
+  const readConfig = () => store?.read("config") ?? { vendors: [] };
 
   const broadcast = (file) => {
     for (const w of BrowserWindow.getAllWindows()) w.webContents.send("chaGame:dataChanged", { file });
@@ -42,16 +44,14 @@ if (!app.requestSingleInstanceLock()) {
 
   app.whenReady().then(async () => {
     store = createStore(join(app.getPath("userData"), "arena"));
-    config = store.read("config") ?? { vendors: [] };
-    gateway = await startGateway({ getConfig: () => config });
+    gateway = await startGateway({ getConfig: readConfig });
 
     ipcMain.handle("chaGame:readData", (_e, file) => store.read(file));
     ipcMain.handle("chaGame:writeData", (_e, file, data) => { store.write(file, data); broadcast(file); return true; });
     ipcMain.handle("chaGame:getGateway", () => ({ base: gateway.base, token: gateway.token }));
-    ipcMain.handle("chaGame:getConfig", () => config);
+    ipcMain.handle("chaGame:getConfig", () => readConfig());
     ipcMain.handle("chaGame:saveConfig", (_e, next) => {
-      config = next && typeof next === "object" ? { vendors: next.vendors ?? [] } : { vendors: [] };
-      store.write("config", config);
+      store.write("config", { vendors: next && typeof next === "object" ? next.vendors ?? [] : [] });
       broadcast("config");
       return true;
     });

@@ -30,7 +30,7 @@ async function discoverGateway() {
   const b = bridge();
   if (b) {
     const g = await b.getGateway();
-    return { base: g.base, proxyBase: `${g.base}?t=${g.token}` };
+    return { base: g.base, proxyBase: `${g.base}/t/${g.token}` }; // token 走路径段（query 形式被引擎 URL 拼接吃掉——真机 T4 实锤）
   }
   return { base: "http://127.0.0.1:0", proxyBase: "http://127.0.0.1:0" };
 }

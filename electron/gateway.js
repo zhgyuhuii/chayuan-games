@@ -71,10 +71,16 @@ export function startGateway({ getConfig }) {
 
   const server = createServer(async (req, res) => {
     if (req.method === "OPTIONS") { res.writeHead(204, { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Access-Control-Allow-Methods": "GET,POST,OPTIONS" }); return res.end(); }
+    // token 走路径段 /t/<token>/…（2026-11-07 真机 T4 实锤：query 形式 base?t=token
+    // 会被 players.js 的 `${base}/v1/…` 拼接吃掉路径 → 永远 401；路径段拼接天然
+    // 正确且校验精确。兼容 Authorization Bearer（非引擎调用方）。
     const url = new URL(req.url, "http://127.0.0.1");
-    if (url.searchParams.get("t") !== token && req.headers.authorization !== `Bearer ${token}`) return json(res, 401, { error: { message: "invalid gateway token" } });
+    const mToken = /^\/t\/([0-9a-f]{32})(\/.*)$/.exec(url.pathname);
+    const okToken = (mToken && mToken[1] === token) || req.headers.authorization === `Bearer ${token}`;
+    if (!okToken) return json(res, 401, { error: { message: "invalid gateway token" } });
+    if (mToken) url.pathname = mToken[2]; // 剥 token 段后再路由
 
-    if (req.method === "GET" && url.pathname === "/v1/models") {
+    if (req.method === "GET" && url.pathname === "/v1/models") { // (url 已剥 token 段)
       const vendorId = url.searchParams.get("vendor");
       const cfg = getConfig();
       const vendors = (cfg.vendors ?? []).filter((v) => (vendorId ? v.id === vendorId : true) && v.enabled !== false);
@@ -115,7 +121,8 @@ export function startGateway({ getConfig }) {
           body: JSON.stringify({ ...body, model: route_.model }),
           signal: AbortSignal.timeout(300_000),
         });
-        const data = await r.json().catch(() => ({}));
+        const data = await r.json().catch(() => null);
+        if (data === null) return json(res, r.status, { error: { message: `厂商返回 HTTP ${r.status}（非 JSON 响应）` } }); // 错误信息不吞
         return json(res, r.status, data);
       } catch (e) {
         return json(res, 502, { error: { message: `网关转发失败：${e?.message ?? e}` } });
