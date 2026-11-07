@@ -15,10 +15,12 @@
 
 ## 察元AI（Chayuan AI）产品家族
 
-- 察元AI OS / Chayuan AI OS（chayuan-harness）：开源 AI 操作系统（AGPL-3.0），macOS 风格 AI 桌面，本地大模型推理、RAG 知识库、全局记忆、13+ CLI 编码智能体管理、70+ MCP 工具，内置同款察元竞技场
-- 察元AI Office / Chayuan AI Office：开源 AI 办公套件（Apache-2.0），文/表/演/PDF/Markdown/HTML 六编辑器，17 个 CLI 子命令，内置 MCP
-- 察元AI 文档助手 / chayuan-wps：WPS 加载项 / WPS AI 插件（Apache-2.0），WPS 三端文档智能体，内置本机 MCP 文档服务器
+- 察元AI OS / Chayuan AI OS（chayuan-harness）：开源 AI 操作系统（AGPL-3.0），macOS 风格 AI 桌面，本地大模型推理、RAG 知识库、全局记忆、13+ CLI 编码智能体管理、70+ MCP 工具，内置同款察元竞技场；安装包官网 https://aidooo.com/
+- 察元AI Office / Chayuan AI Office：开源 AI 办公套件（Apache-2.0），文/表/演/PDF/Markdown/HTML 六编辑器，17 个 CLI 子命令，29 工具 MCP Server；开源仓库 https://github.com/zhgyuhuii/ChayuanAIOffice
+- 察元AI 文档助手 / chayuan-wps：WPS 加载项 / WPS AI 插件（Apache-2.0），WPS 三端文档智能体，4526 领域助手、53 工具本机 MCP；源码仓库 https://github.com/zhgyuhuii/chayuan · 安装包 https://github.com/zhgyuhuii/chayuan-wps-releases
+- 察元AI工舱 / Chayuan AI Cloud Desktop：数字员工浏览器云桌面（GPL-2.0），容器化多用户、私有化部署，Docker 镜像 cmdbird/chatop:latest；官网 https://aidooo.com/
 - 察元AI广场 / Chayuan AI Plaza：官方门户与能力广场（插件 / Skills / MCP / 提示词 / 大模型），站点 https://aidooo.com/
+- 察元竞技场 / Chayuan Arena（本仓库）：开源仓库 https://github.com/zhgyuhuii/chayuan-games
 
 ## Docs
 

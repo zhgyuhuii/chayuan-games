@@ -143,6 +143,15 @@ LLM players move via a unified `{move, comment}` protocol with a **parsing fallb
 
 Chayuan Arena is a member of the **Chayuan AI（察元AI）** product family. All family members are **open-source and local-first**, sharing one engine and one assistant system — **a skill learned in one product works in the others**. Official unified entry: **[Chayuan AI Plaza, aidooo.com](https://aidooo.com/)**.
 
+| Member | 中文 / English | Positioning | License | Open-source repo / entry |
+|---|---|---|---|---|
+| Chayuan AI OS (chayuan-harness) | 察元AI OS | Open-source AI operating system / AI desktop | AGPL-3.0 | Installers at [aidooo.com](https://aidooo.com/) |
+| Chayuan AI Office | 察元AI Office | Open-source AI office suite | Apache-2.0 | **[github.com/zhgyuhuii/ChayuanAIOffice](https://github.com/zhgyuhuii/ChayuanAIOffice)** · [aidooo.com](https://aidooo.com/) |
+| Chayuan AI Document Assistant (chayuan-wps) | 察元AI 文档助手 | WPS add-in / WPS AI plugin | Apache-2.0 | **[github.com/zhgyuhuii/chayuan](https://github.com/zhgyuhuii/chayuan)** (source) · [chayuan-wps-releases](https://github.com/zhgyuhuii/chayuan-wps-releases) (installers) |
+| Chayuan AI Cloud Desktop | 察元AI工舱 | Digital-employee cloud desktop | GPL-2.0 | Docker `cmdbird/chatop:latest` · [aidooo.com](https://aidooo.com/) |
+| Chayuan AI Plaza (official site) | 察元AI广场 | Official portal & capability plaza | — | [aidooo.com](https://aidooo.com/) |
+| Chayuan Arena (this repo) | 察元竞技场 | LLM chess & card arena | MIT | **[github.com/zhgyuhuii/chayuan-games](https://github.com/zhgyuhuii/chayuan-games)** |
+
 ### 🖥️ Chayuan AI OS · 察元AI OS (chayuan-harness) — Open-Source AI Operating System / AI Desktop
 
 The family flagship. An **AGPL-3.0 open-source AI operating system** that turns an ordinary computer into a **local AI workstation** — a macOS-style AI desktop environment (Electron, Windows / macOS / Linux incl. Kylin & UOS 信创), or a **web desktop** in any browser. **Fully usable offline / air-gapped**; data never leaves the machine.
@@ -178,7 +187,7 @@ An **Apache-2.0 open-source AI office suite** — a **local-first alternative to
 - **90-day free trial, no feature lock**: after the trial it only gently reminds — editors are open source and self-buildable.
 - Public comparison: if you need **deep AI integration + byte-fidelity round-trip + offline + 信创 compatibility + open CLI/MCP**, this is one of the few open-source options that satisfies all at once (see its repo README for the full table).
 
-> Downloads & source: [aidooo.com](https://aidooo.com/) / GitHub Releases (zhgyuhuii/ChayuanAIOffice); also runs as a plugin inside Chayuan AI OS.
+> Downloads & source: official site [aidooo.com](https://aidooo.com/) · open-source repo **[github.com/zhgyuhuii/ChayuanAIOffice](https://github.com/zhgyuhuii/ChayuanAIOffice)** (Apache-2.0, star it ⭐); also runs as a plugin inside Chayuan AI OS.
 
 ### 📝 Chayuan AI Document Assistant · 察元AI 文档助手 (chayuan-wps) — WPS AI Plugin / Add-in
 
@@ -194,11 +203,18 @@ An **Apache-2.0 open-source** (Vue 3 + Vite) third-party intelligent WPS add-in 
 - **Offline-first, data stays in-domain**: Ollama / LM Studio / Xinference local models first, keys stored locally.
 - **One engine, four SKUs**: Chayuan AI Document Assistant (WPS add-in) · Chayuan AI Desktop (single-machine, offline-capable) · Chayuan AI Service (Docker network edition for teams) · Chayuan AI Ultimate (large-scale online office) — the same query engine + model gateway + local capabilities in four shapes.
 
-> Downloads & source: [aidooo.com](https://aidooo.com/) / GitHub (zhgyuhuii/chayuan-wps-releases).
+> Downloads & source: official site [aidooo.com](https://aidooo.com/) · open-source repo **[github.com/zhgyuhuii/chayuan](https://github.com/zhgyuhuii/chayuan)** (source; npm package name `chayuan`) · installer repo **[github.com/zhgyuhuii/chayuan-wps-releases](https://github.com/zhgyuhuii/chayuan-wps-releases)** (Apache-2.0, star it ⭐).
 
 ### ☁️ Chayuan AI Cloud Desktop · 察元AI工舱 — Digital-Employee Cloud Desktop
 
-A **GPL-2.0 open-source** browser **cloud desktop** for digital employees: containerized, multi-user, privately deployable (offline / intranet ready) — one browser tab per person gives each user a full workspace, manageable and auditable. One command via Docker image `cmdbird/chatop:latest`; same kernel and skill system as Chayuan AI OS.
+A **GPL-2.0 open-source** browser **cloud desktop** built for the "digital employee" scenario: containerized multi-tenancy, per-user workspaces, privately deployable into **offline / intranet** environments. Deploy once and everyone just opens a browser — admins maintain servers, users install nothing.
+
+- **Containerized multi-user**: an isolated container workspace per user — resource isolation, clear permissions, clean audit trails; one deployment serves a whole department.
+- **Same kernel as Chayuan AI OS**: shares the dsh agent kernel and skill system — a skill learned in the OS works in the cloud desktop unchanged.
+- **Centralized knowledge base**: team KBs managed and retrieved in one place — no per-seat or per-call billing.
+- **One-command deploy**: Docker image `cmdbird/chatop:latest`; the family's "Service / Ultimate" SKUs are built on this cloud-desktop shape (hundreds to tens of thousands of users online).
+
+> Downloads & deployment: official site [aidooo.com](https://aidooo.com/) (Service / Ultimate one-command deployment docs ship with the installers).
 
 ### ✨ Chayuan AI Plaza · 察元AI广场 — Official Portal & Capability Plaza (aidooo.com)
 

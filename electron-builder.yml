@@ -16,12 +16,12 @@ mac:
   icon: build/icon.icns
   identity: null
 win:
-  target: [{ target: nsis, arch: [x64] }]
+  target: [{ target: nsis, arch: [x64, arm64] }]
+  artifactName: "${productName}-Setup-${version}-${arch}.${ext}" # 双架构拆两包，不合并
   icon: build/icon.ico
 linux:
   icon: build/icon.png
   target:
     - { target: deb, arch: [x64, arm64] }
-    - { target: AppImage, arch: [x64] }
   category: Game
   maintainer: chayuan

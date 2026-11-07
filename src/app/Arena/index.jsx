@@ -38,6 +38,7 @@ import Room from "./Room.jsx";
 import Ladder from "./Ladder.jsx";
 import Records from "./Records.jsx";
 import Replay from "./Replay.jsx";
+import ArenaFooter from "./Footer.jsx";
 
 export default function Arena(props = {}) {
   const { t } = useI18n();
@@ -391,6 +392,8 @@ export default function Arena(props = {}) {
           />
         )}
       </div>
+      {/* 家族页脚：五件套共用一处（出品方/家族应用/GitHub 点赞/关注我们二维码） */}
+      <ArenaFooter />
     </div>
   );
 }

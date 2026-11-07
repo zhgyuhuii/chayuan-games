@@ -143,6 +143,15 @@ LLM 玩家统一协议出招 `{move, comment}`，带**解析容错链 + 无 JSON
 
 察元竞技场是 **察元AI（Chayuan AI）** 产品家族的一员。家族成员**全部开源、本地优先**，共用一套引擎与助手体系——**在一个产品里学会的技能，在其他产品里同样可用**。官方统一入口：**[察元AI广场 aidooo.com](https://aidooo.com/)**。
 
+| 成员 | 中文 / English | 定位 | 协议 | 开源仓库 / 入口 |
+|---|---|---|---|---|
+| 察元AI OS（chayuan-harness） | Chayuan AI OS | 开源 AI 操作系统 / AI 桌面 | AGPL-3.0 | [aidooo.com](https://aidooo.com/) 下载安装包 |
+| 察元AI Office | Chayuan AI Office | 开源 AI 办公套件 | Apache-2.0 | **[github.com/zhgyuhuii/ChayuanAIOffice](https://github.com/zhgyuhuii/ChayuanAIOffice)** · [aidooo.com](https://aidooo.com/) |
+| 察元AI 文档助手（chayuan-wps） | Chayuan AI Document Assistant | WPS 加载项 / WPS AI 插件 | Apache-2.0 | **[github.com/zhgyuhuii/chayuan](https://github.com/zhgyuhuii/chayuan)**（源码）· [chayuan-wps-releases](https://github.com/zhgyuhuii/chayuan-wps-releases)（安装包） |
+| 察元AI工舱 | Chayuan AI Cloud Desktop | 数字员工云桌面 | GPL-2.0 | Docker `cmdbird/chatop:latest` · [aidooo.com](https://aidooo.com/) |
+| 察元AI广场（官网） | Chayuan AI Plaza | 官方门户与能力广场 | — | [aidooo.com](https://aidooo.com/) |
+| 察元竞技场（本仓库） | Chayuan Arena | 大模型棋牌竞技场 | MIT | **[github.com/zhgyuhuii/chayuan-games](https://github.com/zhgyuhuii/chayuan-games)** |
+
 ### 🖥️ 察元AI OS · Chayuan AI OS（chayuan-harness）— 开源 AI 操作系统 / AI 桌面
 
 家族旗舰。**AGPL-3.0 开源**的 **AI 操作系统 / AI 桌面操作系统**：把一台普通电脑变成**本地 AI 工作站**——macOS 风格的 AI 桌面环境（Electron 实现，Windows / macOS / Linux 含麒麟、统信 UOS），或任意浏览器打开的**网页桌面**。**断网 / 空气隔离环境完全可用**，数据 0 出网。
@@ -178,7 +187,7 @@ LLM 玩家统一协议出招 `{move, comment}`，带**解析容错链 + 无 JSON
 - **90 天免费试用官方包**：到期仅温和提醒、**不锁功能**；编辑器本体开源可自行构建。
 - 选型对比公开数据：要 **AI 深度嵌入 + 字节保真往返 + 本地离线 + 信创适配 + 开放 CLI/MCP**，这是少数同时满足的开源选择（详见其仓库 README 对比表）。
 
-> 下载与源码：[aidooo.com](https://aidooo.com/) / GitHub Releases（zhgyuhuii/ChayuanAIOffice）；也可作为插件运行在察元AI OS 桌面内。
+> 下载与源码：官网 [aidooo.com](https://aidooo.com/) · 开源仓库 **[github.com/zhgyuhuii/ChayuanAIOffice](https://github.com/zhgyuhuii/ChayuanAIOffice)**（Apache-2.0，欢迎 Star ⭐）；也可作为插件运行在察元AI OS 桌面内。
 
 ### 📝 察元AI 文档助手 · Chayuan AI Document Assistant（chayuan-wps）— WPS AI 插件 / WPS 加载项
 
@@ -194,11 +203,18 @@ LLM 玩家统一协议出招 `{move, comment}`，带**解析容错链 + 无 JSON
 - **离线优先、数据不出域**：Ollama / LM Studio / Xinference 等本地模型优先，密钥本地保存。
 - **一套引擎四档 SKU**：察元AI 文档助手（WPS 插件）· 察元AI 桌面版（单机断网可用）· 察元AI 服务版（Docker 网络版团队共用）· 察元AI 至臻版（大规模在线办公）——同一套查询引擎 + 模型网关 + 本地能力按场景换形态。
 
-> 下载与源码：[aidooo.com](https://aidooo.com/) / GitHub（zhgyuhuii/chayuan-wps-releases）。
+> 下载与源码：官网 [aidooo.com](https://aidooo.com/) · 开源仓库 **[github.com/zhgyuhuii/chayuan](https://github.com/zhgyuhuii/chayuan)**（源码，npm 包名 `chayuan`）· 安装包仓库 **[github.com/zhgyuhuii/chayuan-wps-releases](https://github.com/zhgyuhuii/chayuan-wps-releases)**（Apache-2.0，欢迎 Star ⭐）。
 
-### ☁️ 察元AI工舱 · Chayuan AI 工舱 — 数字员工云桌面
+### ☁️ 察元AI工舱 · Chayuan AI Cloud Desktop（工舱）— 数字员工云桌面
 
-**GPL-2.0 开源**的浏览器**云桌面**：容器化、多用户、可私有化部署（断网 / 内网可用），面向「数字员工」场景——打开浏览器每人一个工作空间，管得住、审得清。Docker 镜像 `cmdbird/chatop:latest` 一键拉起；与察元AI OS 同内核、同技能体系。
+**GPL-2.0 开源**的浏览器**云桌面 / 云电脑**，为「数字员工」场景而生：容器化多租户、按人分配工作空间、可私有化部署到**断网 / 内网**环境。一次部署，全员浏览器即用——运维只管服务器，用户不装任何客户端。
+
+- **容器化多用户**：每用户独立容器工作空间，资源隔离、权限分明、审计清晰，政企科室级共享一套部署。
+- **与察元AI OS 同内核**：共用同一套 dsh 智能体内核与技能体系——OS 里学会的技能，工舱里直接可用。
+- **知识库集中沉淀**：团队知识库统一管理、集中检索，不再按人头 / 按调用量付费。
+- **一键部署**：Docker 镜像 `cmdbird/chatop:latest` 拉起即可；家族 SKU 中的「察元AI 服务版 / 至臻版」即基于工舱形态（数百到上万人在线办公）。
+
+> 下载与部署：官网 [aidooo.com](https://aidooo.com/)（服务版 / 至臻版一键部署文档随安装包发布）。
 
 ### ✨ 察元AI广场 · Chayuan AI Plaza — 官方门户与能力广场（aidooo.com）
 
