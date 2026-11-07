@@ -1,0 +1,15 @@
+Chayuan Arena — third-party assets & references
+================================================
+
+Vendor logos (embedded data URIs, src/vendors/generated-model-logos.js)
+are used solely to identify the corresponding services; all trademarks,
+logos and brand assets belong to their respective owners.
+
+Engine design references (no code vendored):
+- TrueSkill (Microsoft Research) — public algorithm, self-implemented
+- mjai event-stream format — protocol reference
+- lihongxun945/gobang (MIT) — rule reference only, self-implemented
+- TextArena (MIT) — protocol design reference (no code copied)
+- 幼麟棋牌 qipai — rule-flow reference only (no code, per its license)
+
+UI icons: game-icons.js generated in-house (Agnes image models).

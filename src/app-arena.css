@@ -1,0 +1,244 @@
+/* 竞技场样式（自 harness app.css 提取：cg-markdown→cg-markdown 改名 + arena-* 全量） */
+
+
+/* Markdown 预览（tier1-harvest ③ MarkedView）：渲染面基本排版 */
+.cg-markdown h1, .cg-markdown h2, .cg-markdown h3,
+.cg-markdown h4, .cg-markdown h5, .cg-markdown h6 {
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 1.2em 0 0.5em;
+}
+
+
+.cg-markdown h1 { font-size: 1.7em; border-bottom: 1px solid rgba(128,128,128,.25); padding-bottom: .3em; }
+
+
+.cg-markdown h2 { font-size: 1.4em; border-bottom: 1px solid rgba(128,128,128,.18); padding-bottom: .25em; }
+
+
+.cg-markdown h3 { font-size: 1.2em; }
+
+
+.cg-markdown p { margin: 0.7em 0; line-height: 1.7; }
+
+
+.cg-markdown ul, .cg-markdown ol { margin: 0.7em 0; padding-left: 1.6em; }
+
+
+.cg-markdown ul { list-style: disc; }
+
+
+.cg-markdown ol { list-style: decimal; }
+
+
+.cg-markdown li { margin: 0.3em 0; line-height: 1.6; }
+
+
+.cg-markdown a { color: #4aa8ff; text-decoration: none; }
+
+
+.cg-markdown a:hover { text-decoration: underline; }
+
+
+.cg-markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+  background: rgba(128,128,128,.16);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+
+.cg-markdown pre {
+  background: rgba(128,128,128,.12);
+  border: 1px solid rgba(128,128,128,.18);
+  border-radius: 8px;
+  padding: 0.9em 1.1em;
+  overflow-x: auto;
+  margin: 0.9em 0;
+}
+
+
+.cg-markdown pre code { background: transparent; padding: 0; font-size: 0.85em; }
+
+
+.cg-markdown blockquote {
+  border-left: 3px solid rgba(74,168,255,.55);
+  margin: 0.9em 0;
+  padding: 0.1em 0 0.1em 1em;
+  opacity: 0.85;
+}
+
+
+.cg-markdown table { border-collapse: collapse; margin: 0.9em 0; width: 100%; }
+
+
+.cg-markdown th, .cg-markdown td {
+  border: 1px solid rgba(128,128,128,.3);
+  padding: 0.4em 0.8em;
+  text-align: left;
+}
+
+
+.cg-markdown th { background: rgba(128,128,128,.12); font-weight: 600; }
+
+
+.cg-markdown img { max-width: 100%; border-radius: 6px; }
+
+
+.cg-markdown hr { border: none; border-top: 1px solid rgba(128,128,128,.3); margin: 1.4em 0; }
+
+
+.cg-markdown .chatop-md-task { list-style: none; margin-left: -1.2em; }
+
+
+
+/* ---- 察元竞技场（games-llm-arena-plan 视觉轮 2026-11-04）：材质/动画/牌面 ----
+   纯 CSS/SVG 自绘零图片：绒面牌桌、木纹棋盘、立体牌面（cards.jsx SVG）、
+   落子弹入/出牌上滑/发牌 stagger/呼吸环/流光横幅全套动画。 */
+
+/* ---------- 材质底 ---------- */
+.arena-wood {
+  background:
+    repeating-linear-gradient(94deg, rgba(140,90,30,0.06) 0 3px, transparent 3px 9px),
+    linear-gradient(135deg, #f6ddb0 0%, #eec98b 46%, #e2b06a 100%);
+  box-shadow: inset 0 0 30px rgba(120,72,20,0.28), inset 0 0 4px rgba(255,255,255,0.4), 0 8px 24px rgba(0,0,0,0.22);
+}
+
+
+.arena-felt {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255,255,255,0.10), transparent 70%),
+    radial-gradient(ellipse at center, #2f8158 0%, #226345 58%, #174a32 100%);
+  box-shadow: inset 0 0 46px rgba(0,0,0,0.42), 0 8px 24px rgba(0,0,0,0.25);
+}
+
+
+.arena-felt-blue {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255,255,255,0.08), transparent 70%),
+    radial-gradient(ellipse at center, #2b5f8a 0%, #1f4a6e 58%, #153350 100%);
+  box-shadow: inset 0 0 46px rgba(0,0,0,0.42), 0 8px 24px rgba(0,0,0,0.25);
+}
+
+
+
+/* ---------- 动画 ---------- */
+@keyframes arenaPop { 0% { transform: scale(0.4); opacity: 0.3; }
+
+
+@keyframes arenaSlideUp { from { transform: translateY(16px); opacity: 0; }
+
+
+@keyframes arenaDeal { from { transform: translateY(30px) rotate(-5deg); opacity: 0; }
+
+
+@keyframes arenaRing { 0%, 100% { opacity: 0.95; }
+
+ 50% { opacity: 0.3; }
+
+
+@keyframes arenaShimmer { from { background-position: -200% 0; }
+
+
+@keyframes arenaGlow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(79,140,255,0.9)); }
+
+
+@keyframes arenaGoldPulse { 0%, 100% { box-shadow: 0 0 4px rgba(230,179,90,0.6); }
+
+
+.arena-anim-pop { animation: arenaPop 0.22s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+
+
+.arena-anim-slide { animation: arenaSlideUp 0.25s ease-out both; }
+
+
+.arena-anim-deal { animation: arenaDeal 0.42s cubic-bezier(0.2, 1.2, 0.4, 1) both; }
+
+
+.arena-anim-ring { animation: arenaRing 1.6s ease-in-out infinite; }
+
+
+.arena-anim-glow { animation: arenaGlow 1.5s ease-in-out infinite; }
+
+
+.arena-anim-gold { animation: arenaGoldPulse 1.8s ease-in-out infinite; }
+
+
+.arena-shimmer { position: relative; overflow: hidden; }
+
+
+.arena-shimmer::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 32%, rgba(255,255,255,0.30) 50%, transparent 68%);
+  background-size: 200% 100%;
+  animation: arenaShimmer 2.4s linear infinite;
+}
+
+
+
+/* ---------- 扑克牌（cards.jsx PokerCard SVG 外层交互态） ---------- */
+.arena-pk { filter: drop-shadow(0 2px 3px rgba(0,0,0,0.28)); transition: transform 0.16s ease, filter 0.16s ease; }
+
+
+.arena-pk.is-click { cursor: pointer; }
+
+
+.arena-pk.is-click:hover { transform: translateY(-6px); filter: drop-shadow(0 6px 8px rgba(0,0,0,0.35)); }
+
+
+.arena-pk.is-picked { transform: translateY(-14px); filter: drop-shadow(0 8px 10px rgba(30,80,200,0.45)) drop-shadow(0 0 2px rgba(79,140,255,0.9)); }
+
+
+.arena-pk.is-picked:hover { transform: translateY(-14px); }
+
+
+.arena-pk.is-dim { opacity: 0.55; filter: saturate(0.6) drop-shadow(0 2px 3px rgba(0,0,0,0.2)); }
+
+
+
+/* ---------- 麻将牌（cards.jsx MjTileFace SVG 外层交互态） ---------- */
+.arena-mj { filter: drop-shadow(0 2px 2.5px rgba(0,0,0,0.30)); transition: transform 0.16s ease, opacity 0.2s ease, filter 0.2s ease; }
+
+
+.arena-mj.is-click { cursor: pointer; }
+
+
+.arena-mj.is-click:hover { transform: translateY(-5px); filter: drop-shadow(0 6px 7px rgba(0,0,0,0.38)); }
+
+
+/* 缺门牌 = 「必须先打」的正向高亮（金框脉动），不是禁用灰——此前半透明样式
+   与不可点混淆，用户点非缺门灰牌静默无反应 = 「不能出牌」（真机实锤根因） */
+.arena-mj.is-lack { outline: 2px solid #e8b04b; outline-offset: 1px; border-radius: 6px; animation: arenaLackPulse 1.6s ease-in-out infinite; }
+
+
+@keyframes arenaLackPulse { 0%, 100% { outline-color: rgba(232,176,75,0.95); }
+
+
+.arena-mj.is-drawn { transform: translateY(-4px); filter: drop-shadow(0 5px 6px rgba(0,0,0,0.35)); }
+
+
+.arena-mj.is-glow { animation: arenaGlow 1.5s ease-in-out infinite; }
+
+
+
+/* ---------- 事件流细滚动条 ---------- */
+.arena-feed::-webkit-scrollbar { width: 4px; }
+
+
+.arena-feed::-webkit-scrollbar-thumb { background: rgb(127 127 127 / 0.35); border-radius: 2px; }
+
+
+
+/* ---------- 大厅卡位 ---------- */
+.arena-lobby-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+
+
+.arena-lobby-card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,0.14); }
+
+
+
+.arena-drag-ghost { will-change: transform; transition: none; }
+
+
+.arena-board-svg { touch-action: none; }
