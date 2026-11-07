@@ -7,6 +7,7 @@ files:
   - dist/**
   - electron/**
   - package.json
+  - "!**/node_modules/**" # 主进程纯 Node 内建（gateway/store 零 npm 依赖），renderer 由 vite 全量打进 dist——asar 不装 node_modules
 asar: true
 mac:
   target:
