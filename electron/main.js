@@ -7,10 +7,30 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { copyFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { createStore } from "./store.js";
 import { startGateway } from "./gateway.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+/**
+ * userData 迁移：productName 变更（Chayuan Arena → 察元AI游戏）会换 userData
+ * 目录——新目录缺 arena/config.json 而旧目录存在时整目录搬过来（保住已配
+ * 厂商 key 与对局记录）。
+ */
+const migrateLegacyUserData = () => {
+  try {
+    const legacy = join(app.getPath("appData"), "Chayuan Arena", "arena");
+    const cur = join(app.getPath("userData"), "arena");
+    if (!existsSync(legacy)) return;
+    if (existsSync(join(cur, "config.json"))) return; // 新目录已有数据，不动
+    mkdirSync(cur, { recursive: true });
+    for (const f of readdirSync(legacy)) copyFileSync(join(legacy, f), join(cur, f));
+    console.log("[migrate] userData/arena <-", legacy);
+  } catch (e) {
+    console.warn("[migrate] skipped:", e?.message ?? e);
+  }
+};
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -29,8 +49,10 @@ if (!app.requestSingleInstanceLock()) {
   const createWindow = () => {
     win = new BrowserWindow({
       width: 1280, height: 840, minWidth: 980, minHeight: 640,
-      title: "察元竞技场 · Chayuan Arena",
+      title: "察元AI游戏",
       backgroundColor: "#171a21",
+      // 开发态窗口/任务栏图标（打包后 mac 走 icns、win 走 exe 内嵌 ico）
+      ...(app.isPackaged ? {} : { icon: join(__dirname, "../build/icon.png") }),
       webPreferences: {
         preload: join(__dirname, "preload.cjs"),
         contextIsolation: true,
@@ -43,6 +65,12 @@ if (!app.requestSingleInstanceLock()) {
   };
 
   app.whenReady().then(async () => {
+    migrateLegacyUserData();
+    // 开发态 Dock 图标（打包后由 icon.icns 接管）
+    if (!app.isPackaged && process.platform === "darwin") {
+      const dockPng = join(__dirname, "../build/icon.png");
+      if (existsSync(dockPng)) app.dock?.setIcon(dockPng);
+    }
     store = createStore(join(app.getPath("userData"), "arena"));
     gateway = await startGateway({ getConfig: readConfig });
 

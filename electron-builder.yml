@@ -1,5 +1,5 @@
 appId: io.chayuan.game
-productName: Chayuan Arena
+productName: 察元AI游戏
 directories:
   output: release
   buildResources: build
@@ -13,10 +13,13 @@ mac:
   target:
     - { target: dmg, arch: [arm64, x64] }
   category: public.app-category.games
+  icon: build/icon.icns
   identity: null
 win:
   target: [{ target: nsis, arch: [x64] }]
+  icon: build/icon.ico
 linux:
+  icon: build/icon.png
   target:
     - { target: deb, arch: [x64, arm64] }
     - { target: AppImage, arch: [x64] }

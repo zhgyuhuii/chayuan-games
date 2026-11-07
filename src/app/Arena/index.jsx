@@ -26,6 +26,7 @@ import { runMatch } from "../../arena/match-runner.js";
 import { applyMatchResult, loadRecords, loadRatings, loadHumans, loadOpenings } from "../../arena/storage.js";
 import { setProtocolProfileStore } from "../../arena/protocol-profile.js";
 import { loadData, saveData } from "../../lib/dataClient.js";
+import appIcon from "../../assets/app-icon.png";
 
 // 协议画像存储注入（os-data 桥；chayuan-game 侧注入 IPC 版同款接口）
 setProtocolProfileStore({ load: loadData, save: saveData });
@@ -311,7 +312,7 @@ export default function Arena(props = {}) {
     <div className="w-full h-full flex flex-col min-h-0 bg-[#f7f7f5] dark:bg-neutral-900 text-gray-900 dark:text-white" data-arena-app {...(gameIdParam ? { "data-arena-game": gameIdParam } : {})}>
       {/* 顶栏：五件套 tab */}
       <div className="flex items-center gap-1 px-4 h-11 border-b border-black/5 dark:border-white/10 shrink-0">
-        <span className="text-sm font-semibold mr-3">🏟️ {t("arena.app.title")}</span>
+        <span className="text-sm font-semibold mr-3 flex items-center gap-1.5"><img src={appIcon} alt="" className="w-4 h-4 rounded" /> {t("arena.app.title")}</span>
         {tabs.map((tb) => (
           <button
             key={tb.id}
