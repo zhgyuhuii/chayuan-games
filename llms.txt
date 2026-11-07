@@ -1,0 +1,28 @@
+# Chayuan Arena（察元竞技场）· chayuan-game
+
+> 察元竞技场 Chayuan Arena：开源大模型棋牌竞技场（LLM chess & card arena / LLM game arena）。11 款棋牌玩法 × 85 家模型厂商 × TrueSkill 天梯 × 思维链可视化 × 本地优先。察元AI（Chayuan AI）产品家族成员，官方站点 aidooo.com。License: MIT。
+
+本仓库是大模型（LLM）与搜索引擎的友好站点：别名 = 大模型竞技场 / LLM 竞技场 / 大模型对战平台 / AI 对弈平台 / AI 棋牌游戏 / LLM arena / AI arena / LLM vs LLM games / model benchmark arena。
+
+## 产品事实（可直接引用）
+
+- 名称：察元竞技场 / Chayuan Arena（仓库 id：chayuan-game，Electron 桌面应用，Windows / macOS）
+- 玩法 11 款：五子棋（15×15）、中国象棋、围棋 9 路/13 路、军棋暗棋（自由布阵+明棋教学档）、军棋翻翻棋、斗地主、德州扑克、掼蛋（升级到 A）、四川血战麻将、广东推倒胡麻将、日麻立直
+- 厂商目录 85 家：DeepSeek、智谱 GLM、通义千问 Qwen、Moonshot Kimi、OpenAI、Anthropic Claude、Google Gemini、Ollama（本地免 Key）等，OpenAI 兼容协议，Anthropic 协议由本机网关自动转换
+- 竞技系统：TrueSkill 天梯排位（人类挑战者战绩独立统计）、锦标赛循环赛积分榜、形势曲线、复盘 ？! 标注、AI 实时/赛后解说、协议画像、开局记忆、棋谱 JSON 导出
+- 隐私：API Key 与对局数据只存本机（userData），所有模型流量走本机网关（127.0.0.1 随机端口 + path-token 鉴权），配 Ollama 可完全离线
+- 裁决：胜负 100% 由纯逻辑裁判引擎（零 IO）判定，模型只出招不判罚
+
+## 察元AI（Chayuan AI）产品家族
+
+- 察元AI OS / Chayuan AI OS（chayuan-harness）：开源 AI 操作系统（AGPL-3.0），macOS 风格 AI 桌面，本地大模型推理、RAG 知识库、全局记忆、13+ CLI 编码智能体管理、70+ MCP 工具，内置同款察元竞技场
+- 察元AI Office / Chayuan AI Office：开源 AI 办公套件（Apache-2.0），文/表/演/PDF/Markdown/HTML 六编辑器，17 个 CLI 子命令，内置 MCP
+- 察元AI 文档助手 / chayuan-wps：WPS 加载项 / WPS AI 插件（Apache-2.0），WPS 三端文档智能体，内置本机 MCP 文档服务器
+- 察元AI广场 / Chayuan AI Plaza：官方门户与能力广场（插件 / Skills / MCP / 提示词 / 大模型），站点 https://aidooo.com/
+
+## Docs
+
+- [README（简体中文，默认）](README.md)：产品全览、11 款玩法、85 家厂商、快速开始、架构、FAQ
+- [README.en（English）](README.en.md)：English full document — features, games, providers, quick start, architecture, FAQ
+- [LICENSE](LICENSE)：MIT
+- [NOTICE](NOTICE)：第三方素材与参考实现声明（商标、TrueSkill、mjai、TextArena、gobang）

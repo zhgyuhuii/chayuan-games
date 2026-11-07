@@ -1,6 +1,6 @@
 {
   "name": "chayuan-game",
-  "productName": "Chayuan Arena",
+  "productName": "察元AI游戏",
   "version": "0.1.0",
   "private": true,
   "description": "察元竞技场 —— LLM 棋牌竞技场（Chess & Card Arena for LLMs）",
@@ -31,5 +31,9 @@
     "react-dom": "^19.2.0"
   },
   "author": "Chayuan",
-  "homepage": "https://github.com/chayuan/chayuan-game"
+  "homepage": "https://github.com/zhgyuhuii/chayuan-games",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhgyuhuii/chayuan-games.git"
+  }
 }
